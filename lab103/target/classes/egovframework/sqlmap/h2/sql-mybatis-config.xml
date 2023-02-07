@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="REUSE"/>
+		<setting name="defaultStatementTimeout" value="60"/>
+		<setting name="callSettersOnNulls" value="true"/>
+		<setting name="mapUnderscoreToCamelCase" value="false"/>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="egovMap" type="org.egovframe.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="userVO" type="wenb.modules.front.user.vo.UserVO" />
+		<typeAlias alias="userlistVO" type="wenb.modules.admin.user.vo.UserListVO" />
+		<typeAlias alias="userAdVO" type="wenb.modules.admin.user.vo.UserVO" />
+		<typeAlias alias="roleListVO" type="wenb.modules.admin.user.vo.RoleListVO" />
+		<typeAlias alias="board1VO" type="wenb.modules.front.board1.vo.Board1VO" />
+		<typeAlias alias="replyVO" type="wenb.modules.front.board1.vo.ReplyVO" />
+		<typeAlias alias="commentListVO" type="wenb.modules.admin.user.vo.commentListVO" />
+	</typeAliases>
+</configuration>

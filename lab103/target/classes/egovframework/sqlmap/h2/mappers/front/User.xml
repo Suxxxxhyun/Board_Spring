@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wenb.modules.front.user.mapper.UserMapper">
+	<resultMap id="userMap" type="userVO">
+		<result property="userId" column = "USER_ID"/>
+		<result property="userNm" column = "USER_NM"/>
+		<result property="roleCd" column = "ROLE_CD"/>
+		<result property="roleNm" column = "ROLE_NM"/>
+		<result property="regDate" column = "REG_DATE"/>
+	</resultMap>
+
+	<select id="selectUser" resultMap="userMap">
+	<![CDATA[
+		/* wenb.modules.front.user.mapper.User.selectUser */
+		SELECT 
+			U.USER_ID
+			, U.USER_NM
+			, U.ROLE_CD
+			, (SELECT ROLE_NM FROM TB_ROLE R WHERE R.ROLE_CD = U.ROLE_CD)  ROLE_NM
+			, U.REG_DATE
+		FROM TB_USER U
+		WHERE USER_ID = #{userId}
+		  AND PASSWORD = #{password}
+	]]>
+	</select>
+</mapper>

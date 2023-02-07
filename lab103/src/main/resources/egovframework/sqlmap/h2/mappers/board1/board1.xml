@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wenb.modules.front.board.mapper.BoardMapper">
+	<resultMap id="board1listMap" type="Board1VO">
+		<result property="seq" column = "SEQ"/>
+		<result property="title" column = "TITLE"/>
+		<result property="writer" column = "WRITER"/>
+		<result property="content" column = "CONTENT"/>
+		<result property="regDate" column = "REGDATE"/>
+		<result property="cnt" column = "CNT"/>
+	</resultMap>
+	
+	<resultMap id="boardMap" type="Board1VO">
+		<result property="seq" column = "SEQ"/>
+		<result property="title" column = "TITLE"/>
+		<result property="writer" column = "WRITER"/>
+		<result property="content" column = "CONTENT"/>
+		<result property="regDate" column = "REGDATE"/>
+		<result property="cnt" column = "CNT"/>
+	</resultMap>
+	
+	<resultMap id="ReplyListMap" type="replyVO">
+		<result property="commentId" column = "COMMENT_ID"/>
+		<result property="boardId" column = "BOARD_ID"/>
+		<result property="userId" column = "USER_ID"/>
+		<result property="comment" column = "COMMENT"/>
+		<result property="regDt" column = "REG_DT"/>
+	</resultMap>
+	
+	<select id="selectBoard1List" resultMap="board1listMap">
+	<![CDATA[
+		/*wenb.modules.front.board1.mapper.Board1Mapper.selectBoard1List : 게시판 목록조회*/
+		SELECT 
+			SEQ
+			,TITLE
+			,WRITER
+			,CONTENT
+			,REGDATE
+			,CNT
+		FROM BOARD1
+		ORDER BY SEQ
+	]]>
+	</select>
+	
+	<select id="selectInfo" resultMap="boardMap">
+	<![CDATA[
+		/*wenb.modules.front.board.mapper.BoardMapper.selectBoard : 게시판 상세조회*/
+		SELECT 
+			SEQ
+			,TITLE
+			,WRITER
+			,CONTENT
+			,REGDATE
+			,CNT
+		FROM BOARD1
+		WHERE SEQ = #{seq}
+	]]>
+	</select>
+	
+	<update id="updateBoard">
+	<![CDATA[
+		/*wenb.modules.admin.user.mapper.Board1Mapper.updateBoard : 게시판 정보 수정*/
+		UPDATE BOARD1 
+			SET
+				TITLE = #{title}
+				, CONTENT = #{content}
+		WHERE SEQ = #{seq}
+	]]>
+	</update>
+	
+	<insert id="insertBoard">
+	<![CDATA[
+		/*wenb.modules.admin.user.mapper.AdminUserMapper.insertBoard : 게시판 등록*/
+		INSERT INTO BOARD1(
+			SEQ
+			,TITLE
+			,WRITER
+			,CONTENT
+		) VALUES (
+			(select MAX(seq) + 1 FROM BOARD1)
+			,#{title}
+			,#{writer}
+			,#{content}
+		)
+	]]>
+	</insert>
+	
+	<select id="selectCommentList" resultMap="ReplyListMap">
+	<![CDATA[
+		/*wenb.modules.front.board.mapper.BoardMapper.selectCommentList : 댓글 목록*/
+		SELECT COMMENT_ID
+			, BOARD_ID
+			, USER_ID
+			, COMMENT
+			, FORMATDATETIME(REG_DT, 'yyyy-MM-dd HH:mm:SS') REG_DT
+		FROM TB_BOARD_COMMENTS
+		WHERE BOARD_ID = #{boardId}
+		ORDER BY COMMENT_ID ASC
+	]]>
+	</select>
+	
+	<insert id="insertComment">
+		<![CDATA[
+			/*wenb.modules.from.board.mapper.BoardMapper.insertComment : 댓글 등록*/
+			INSERT INTO TB_BOARD_COMMENTS (
+				COMMENT_ID
+				, BOARD_ID
+				, USER_ID
+				, COMMENT
+			) VALUES (
+				(SELECT NVL(MAX(COMMENT_ID),0) + 1 FROM TB_BOARD_COMMENTS)
+				, #{boardId}
+				, #{userId}
+				, #{comment} 
+			)
+		]]>
+	</insert>
+</mapper>
+	

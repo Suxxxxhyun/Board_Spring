@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	   "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 레이아웃 -->
+	<definition name="front" template="/WEB-INF/tiles/front/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/tiles/front/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/front/footer.jsp" />
+	</definition>
+	
+	<!-- 관리자 레이아웃 -->
+	<definition name="admin" template="/WEB-INF/tiles/admin/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/tiles/admin/header.jsp"/>
+		<put-attribute name="leftMenu" value="/WEB-INF/tiles/admin/leftMenu.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/tiles/admin/footer.jsp"/>
+	</definition>
+
+	<!-- 사용자 -->
+	<definition name="front/*/*" extends="front">
+		<put-attribute name="body" value="/WEB-INF/jsp/front/{1}/{2}.jsp" />
+	</definition>
+	
+	<!-- 관리자 -->
+	<definition name="admin/*/*" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/{1}/{2}.jsp"/>
+	</definition>
+	
+	
+	
+	<!-- validator -->
+	<definition name="validator" template="/WEB-INF/jsp/egovframework/cmmn/validator.jsp">
+		<put-attribute name="title" value="validator" type="string" />
+	</definition>
+
+	<!-- resultProcess : 페이지 이동용 -->
+	<definition name="resultProcess" template="/WEB-INF/jsp/common/resultProcess.jsp" />
+
+	<!-- printPopup : 인쇄창 -->
+	<definition name="printPopup" template="/WEB-INF/tiles/printPopup.jsp" />
+</tiles-definitions>

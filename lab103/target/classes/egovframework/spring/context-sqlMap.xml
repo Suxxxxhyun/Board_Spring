@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+	<context:property-placeholder location="classpath:/egovframework/properties/globals.properties" />
+
+	<!-- 실행환경에서 빈이름 참조(EgovAbstractDAO) -->
+	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
+
+	<!-- SqlSession setup for MyBatis Database Layer -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 실행할 쿼리문은 h2 > mappers > **.xml에 정의되어있는데, 이를 실행할 DBMS에 대한 정보가 dataSource에 담겨있다. -->
+		<!-- ref속성을 타고 들어가면 context-datasource.xml이 있음 -> 이 파일의 14라인인 globals.properties를 보니 h2의 관한 DBMS설정정보가 들어가있음 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 18라인에 classpath는 src/main/java와 src/main/resource파일을 의미함. 즉, 두개의 파일이 톰캣에 의해 빌드됨. -->
+		<property name="configLocation" value="classpath:/egovframework/sqlmap/h2/sql-mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/egovframework/sqlmap/h2/mappers/**/*.xml" />
+		<!-- 21라인에 의해 sqlmap > h2 > mappers > **.xml로 끝나는 모든 파일이 실행이 됨. (User.xml) -->
+		<!-- sqlmap > h2 > mappers > **.xml에 쿼리문 작성 -->
+	</bean>
+
+	<!-- MapperConfigurer setup for MyBatis Database Layer with @Mapper("deptMapper") in DeptMapper Interface -->
+	<!-- 28~32라인 mybatis를 가져왔다는 의미임. -->
+	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="wenb.**.mapper" />
+		<!-- wenb밑에 mapper로 끝나는 패키지에 모두 mybatis를 걸겠다는 의미임. -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSession"/>
+	</bean>
+</beans>
